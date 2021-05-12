@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Martingale</title>
+
+    <script>
+        function push() {
+            var lucro_esperado = parseFloat(document.getElementById("lucro").value);
+            var porcentagem_lucro = parseInt(document.getElementById("porc_lucro").value);
+            var lucro_operacao = parseFloat(document.getElementById("lucro_operacao").value);
+            var nun_operacao = parseInt(document.getElementById("nun_operacoes").value);
+            var contador = 0;
+            var valor_inicial = 1;
+            var valor_ini = 0;
+            var calc = 0;
+            var resultados = "";
+            var capital_total = 0;
+            while (contador < nun_operacao) {
+                while (valor_ini < lucro_esperado) {
+                    calc = valor_inicial*(porcentagem_lucro/100);
+                    valor_ini = calc;
+                    valor_inicial = valor_inicial + 0.01;
+                }
+                // Esse lucro_esperado é responsavel por somar o valor de lucro por operação mais o valor de martingale
+                // (valor investido + porcentagem) para q não se perca dinheiro mantendo o calculo correto.
+                lucro_esperado = valor_inicial+lucro_operacao+lucro_esperado;
+                //Calcula a soma total das operações.
+                capital_total =capital_total+valor_inicial;
+                resultados = resultados +"Investimento de R$ " +valor_inicial.toFixed(2) +("<button onclick='alt()'>Copiar</button>") +("<br>") +" Lucro de R$ " +(lucro_operacao*contador+lucro_operacao).toFixed(2) +("<br>");
+                contador++;
+                document.getElementById("porcentagem_div").innerHTML = "Porcentagem de " +porcentagem_lucro +"% de lucro";
+                document.getElementById("valortotal_div").innerHTML = "Valor total em " +nun_operacao +" operaçõens = R$ " +capital_total.toFixed(2);
+                document.getElementById("result_div").innerHTML = resultados;
+            }                
+        }
+
+        function alt() {
+            document.getElementsByName(valor_inicial)
+            document.execCommand("copy");
+        }
+    </script>
+
+    <style>
+        #form_div {
+            text-align: center;
+        }
+
+        .lab {
+            display: inline-block;
+            width: 180px;
+            text-align: justify;
+            text-justify: distribute;
+        }
+
+        hr {
+            opacity: 0;
+        }
+
+        .stile{
+            text-align: center;
+        }
+
+        #dev{
+            font-size:x-small;      }
+
+    </style>
+</head>
+
+<body>
+    <div id="form_div">
+        <h2>Calculadora Martingale</h2>
+        <p id="dev">Desenvolvida por Henrique Zamuner Pastre</p>
+        <form>
+            <label class="lab">Lucro Esperado</label>
+            <input type="number" / id="lucro">
+            <hr>
+            <label class="lab">Porcentagem de Lucro</label>
+            <input type="number" / id="porc_lucro">
+            <hr>
+            <label class="lab">Lucro por Operação</label>
+            <input type="number" / id="lucro_operacao">
+            <hr>
+            <label class="lab">Numero de Operaçõens</label>
+            <input type="number" / id="nun_operacoes">
+            <hr>
+           
+        </form> 
+        <button onclick='push()'>Calcular</button> 
+        <hr>  
+    </div>
+    <div id="porcentagem_div" class="stile"></div>
+    <hr>
+    <div id="valortotal_div" class="stile"></div>
+    <hr>
+    <div id="result_div" class="stile"></div>
+</body>
+
+</html>
